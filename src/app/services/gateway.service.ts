@@ -10,6 +10,14 @@ import { DeviceModel } from '../interfaces/device.interface';
 })
 export class GatewayService {
   URL = 'http://localhost:3000/';
+  emptyGateway: GatewayModel = {
+    id: '',
+    ip: '',
+    name: '',
+    serial: '',
+  };
+  gatewayToEdit = new BehaviorSubject<GatewayModel>(this.emptyGateway);
+  currentGatewayToEdit = this.gatewayToEdit.asObservable()
 
   constructor(private httpClient: HttpClient) {}
 
@@ -19,6 +27,10 @@ export class GatewayService {
       'Content-Type': 'application/json',
     }),
   };
+
+  changeGatewayValueToEdit(data: GatewayModel) {
+    this.gatewayToEdit.next(data);
+  }
 
   getAllGateways(): Observable<GatewayModel> {
     return this.httpClient
@@ -48,8 +60,7 @@ export class GatewayService {
     );
   }
 
-  createGateway(gateway: any): Observable<GatewayModel> {
-    console.log('createGateway: ', gateway);
+  createGateway(gateway: any): Observable<GatewayModel> {    
     return this.httpClient
       .post<GatewayModel>(
         this.URL + 'gateway',
@@ -59,7 +70,7 @@ export class GatewayService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
-  updateGateway(id: any, gateway: any): Observable<GatewayModel> {
+  updateGateway(id: string, gateway: GatewayModel): Observable<GatewayModel> {    
     return this.httpClient
       .put<GatewayModel>(
         this.URL + 'gateway/' + id,
@@ -69,8 +80,7 @@ export class GatewayService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
-  deleteGateway(id: any) {
-    console.log('Delete: ', id);
+  deleteGateway(id: string) {    
     return this.httpClient
       .delete<GatewayModel>(this.URL + 'gateway/' + id, this.httpOptions)
       .pipe(retry(1), catchError(this.handleError));

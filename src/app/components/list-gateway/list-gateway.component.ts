@@ -4,14 +4,14 @@ import { TitlecardService } from '../../services/titlecard.service';
 import { GatewayService } from 'src/app/services/gateway.service';
 import { GatewayModel } from 'src/app/interfaces/gateway.interface';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 const TITLE_CARD_LIST = 'List gateway';
 @Component({
   selector: 'app-list-gateway',
   standalone: true,
   imports: [CommonModule, HttpClientModule, RouterModule],
-  providers: [GatewayService],
+  // providers: [GatewayService],
   templateUrl: './list-gateway.component.html',
   styleUrls: ['./list-gateway.component.scss'],
 })
@@ -20,7 +20,8 @@ export class ListGatewayComponent implements OnInit {
 
   constructor(
     private titleCardService: TitlecardService,
-    private gatewayService: GatewayService,    
+    private router: Router,
+    private gatewayService: GatewayService
   ) {
     this.titleCardService.setTitleCard(TITLE_CARD_LIST);
   }
@@ -39,18 +40,21 @@ export class ListGatewayComponent implements OnInit {
     });
   }
 
-    // Delete gateway
-    deleteGateway(id: any) {
-      if (window.confirm('Are you sure, you want to delete?')) {
-        this.gatewayService.deleteGateway(id).subscribe((data) => {
-          this.loadGateway();
-        });
-      }else {
-        console.log('No.....');
-      }
+  // Delete gateway
+  deleteGateway(id: any) {
+    if (window.confirm('Are you sure, you want to delete?')) {
+      this.gatewayService.deleteGateway(id).subscribe((data) => {
+        this.loadGateway();
+      });
+    } else {
+      console.log('No.....');
     }
-
-  ViewDetails(id: string) {
-    
   }
+
+  editGateway(data: GatewayModel) {
+    this.gatewayService.changeGatewayValueToEdit(data);
+    this.router.navigateByUrl('/edit-gateway');
+  }
+
+  ViewDetails(id: string) {}
 }

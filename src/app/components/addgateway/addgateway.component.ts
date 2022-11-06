@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TitlecardService } from 'src/app/services/titlecard.service';
 import { ReactiveFormsModule,  FormGroup, FormControl,Validators, FormBuilder } from '@angular/forms';
@@ -22,7 +22,8 @@ export class AddgatewayComponent implements OnInit {
 
   gatewayForm: FormGroup;
   checkedPeripheralDevice = false;
-  gatewayDetails = { name: 'TP-LINK', serial: '123456789', ip: '192.0.0.1' };
+  gatewayDetails = { name: '', serial: '', ip: '' };
+  
 
   constructor(private titleCardService: TitlecardService, private fb: FormBuilder, private gatewayService: GatewayService, public router: Router) {
     this.titleCardService.setTitleCard(TITLE_CARD);
@@ -31,7 +32,7 @@ export class AddgatewayComponent implements OnInit {
       serial: ['', Validators.required],
       ip: [null, [Validators.required,  Validators.pattern("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")] ],
     });
-    this
+    
   }
 
   ngOnInit(): void {
@@ -52,7 +53,7 @@ export class AddgatewayComponent implements OnInit {
   }
 
   addGateway(datagateway: any) {
-    this.gatewayService.createGateway(this.gatewayDetails).subscribe((data: {}) => {
+    this.gatewayService.createGateway(datagateway).subscribe((data: {}) => {
       this.router.navigate(['/list-gateway']);
     });
   }
