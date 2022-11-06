@@ -29,8 +29,9 @@ export class AddgatewayComponent implements OnInit {
     this.gatewayForm = this.fb.group({
       name: ['', Validators.required],
       serial: ['', Validators.required],
-      ip: ['', Validators.required],
+      ip: [null, [Validators.required,  Validators.pattern("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")] ],
     });
+    this
   }
 
   ngOnInit(): void {
@@ -52,15 +53,11 @@ export class AddgatewayComponent implements OnInit {
 
   addGateway(datagateway: any) {
     this.gatewayService.createGateway(this.gatewayDetails).subscribe((data: {}) => {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/list-gateway']);
     });
   }
 
-  onSubmitForm() {
-    console.log('Valid?', this.gatewayForm.valid); // true or false
-    console.log('Name', this.gatewayForm.value.name);
-    console.log('Serial', this.gatewayForm.value.serial);
-    console.log('IP', this.gatewayForm.value.ip);
+  onSubmitForm() {  
     this.gatewayDetails.name = this.gatewayForm.value.name;
     this.gatewayDetails.serial = this.gatewayForm.value.serial;
     this.gatewayDetails.ip = this.gatewayForm.value.ip;
