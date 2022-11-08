@@ -5,6 +5,7 @@ import { ListGatewayComponent } from './components/list-gateway/list-gateway.com
 import { EditGatewayComponent } from './components/edit-gateway/edit-gateway.component';
 import { AddDeviceComponent } from '../../musala-gateway/src/app/components/add-device/add-device.component';
 import { DeviceListComponent } from './components/device-list/device-list.component';
+import { EditDeviceComponent } from './components/edit-device/edit-device.component';
 
 export const routes: Route[] = [
   {
@@ -48,6 +49,13 @@ export const routes: Route[] = [
     loadComponent: () =>
       import('./components/edit-gateway/edit-gateway.component').then(
         (c) => c.EditGatewayComponent
+      ),
+  },
+  {
+    path: 'edit-device',
+    loadComponent: () =>
+      import('./components/edit-device/edit-device.component').then(
+        (c) => c.EditDeviceComponent
       ),
   },
   {

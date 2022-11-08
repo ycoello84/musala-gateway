@@ -91,6 +91,16 @@ export class GatewayService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
+  updateDevice(id: string, device: DeviceModel): Observable<DeviceModel> {    
+    return this.httpClient
+      .put<DeviceModel>(
+        this.URL + 'device/' + id,
+        JSON.stringify(device),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
   deleteGateway(id: string) {    
     return this.httpClient
       .delete<GatewayModel>(this.URL + 'gateway/' + id, this.httpOptions)

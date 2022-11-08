@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TitlecardService } from 'src/app/services/titlecard.service';
@@ -6,7 +6,7 @@ import { GatewayService } from 'src/app/services/gateway.service';
 import { HttpClientModule } from '@angular/common/http';
 import { GatewayModel } from 'src/app/interfaces/gateway.interface';
 import { DeviceModel } from 'src/app/interfaces/device.interface';
-import { forkJoin, Observable } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 const TITLE_CARD_DETAILS = 'Details gateway';
 @Component({
@@ -17,10 +17,11 @@ const TITLE_CARD_DETAILS = 'Details gateway';
   templateUrl: './details-gateway.component.html',
   styleUrls: ['./details-gateway.component.scss'],
 })
-export class DetailsGatewayComponent implements OnInit {
+export class DetailsGatewayComponent implements OnInit, OnDestroy {
   id: string = this.actRoute.snapshot.params['id'];
   objGateway?: GatewayModel;
   arrDevices: DeviceModel[] = [];
+  stop$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public actRoute: ActivatedRoute,
@@ -37,15 +38,13 @@ export class DetailsGatewayComponent implements OnInit {
   }
 
   loadDetailsGateway() {
-    this.gatewayService.getGateway(this.id).subscribe({
-      next: (data: any) => {
-        console.log('Gateway id: ', data);
+    this.gatewayService.getGateway(this.id).pipe(takeUntil(this.stop$)).subscribe({
+      next: (data: any) => {        
         this.objGateway = data;
       },
     });
-    this.gatewayService.getDeviceByGatewayID(this.id).subscribe({
-      next: (data: any) => {
-        console.log('Devices: ', data);
+    this.gatewayService.getDeviceByGatewayID(this.id).pipe(takeUntil(this.stop$)).subscribe({
+      next: (data: any) => {        
         this.arrDevices = data;
       },
     });
@@ -58,5 +57,10 @@ export class DetailsGatewayComponent implements OnInit {
     //     console.log('All values: ', value);
     //   },
     // });
+  }
+
+  ngOnDestroy(): void {
+    this.stop$.next(true);
+    this.stop$.complete();
   }
 }

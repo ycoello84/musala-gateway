@@ -56,6 +56,20 @@ export class DeviceListComponent implements OnInit, OnDestroy {
       .reduce((acc, score) => acc + score, '');
   }
 
+  ChangeStatus(lastDevice: DeviceModel) {
+    for (const device of this.objDevice) {      
+      if(lastDevice.id === device.id){
+        device.status = device.status == true ? false : true;
+        this.updateDevice(device);
+      }
+    }
+  }
+
+  updateDevice(device: DeviceModel){    
+      this.gatewayService.updateDevice(device.id, device).subscribe(data => {})
+    
+  }
+
   ngOnDestroy(): void {
     this.stop$.next(true);
     this.stop$.complete();
