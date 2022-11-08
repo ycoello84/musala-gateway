@@ -3,5 +3,6 @@ export interface DeviceModel {
     provider: string;
     creation_date: string;
     gateway_id: string;
-    status: string;
+    status: boolean;
+    id: string;
   }

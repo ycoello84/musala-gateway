@@ -50,7 +50,7 @@ export class GatewayService {
       .pipe(retry(1), catchError(this.handleError));
   }
 
-  getDevice(gateway_id: string): Observable<DeviceModel[]> {
+  getDeviceByGatewayID(gateway_id: string): Observable<DeviceModel[]> {
     return this.httpClient.get<DeviceModel[]>(this.URL + 'device').pipe(
       retry(1),
       map((v) => {
@@ -65,6 +65,17 @@ export class GatewayService {
       .post<GatewayModel>(
         this.URL + 'gateway',
         JSON.stringify(gateway),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
+  createDevice(device: DeviceModel): Observable<DeviceModel> { 
+    console.log('---> ',device);   
+    return this.httpClient
+      .post<DeviceModel>(
+        this.URL + 'device',
+        JSON.stringify(device),
         this.httpOptions
       )
       .pipe(retry(1), catchError(this.handleError));

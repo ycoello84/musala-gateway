@@ -3,6 +3,8 @@ import { AddgatewayComponent } from './components/addgateway/addgateway.componen
 import { HomeComponent } from './components/home/home.component';
 import { ListGatewayComponent } from './components/list-gateway/list-gateway.component';
 import { EditGatewayComponent } from './components/edit-gateway/edit-gateway.component';
+import { AddDeviceComponent } from '../../musala-gateway/src/app/components/add-device/add-device.component';
+import { DeviceListComponent } from './components/device-list/device-list.component';
 
 export const routes: Route[] = [
   {
@@ -21,10 +23,24 @@ export const routes: Route[] = [
       ),
   },
   {
+    path: 'add-device',
+    loadComponent: () =>
+      import('./components/add-device/add-device.component').then(
+        (c) => c.AddDeviceComponent
+      ),
+  },
+  {
     path: 'list-gateway',
     loadComponent: () =>
       import('./components/list-gateway/list-gateway.component').then(
         (c) => c.ListGatewayComponent
+      ),
+  },
+  {
+    path: 'list-device',
+    loadComponent: () =>
+      import('./components/device-list/device-list.component').then(
+        (c) => c.DeviceListComponent
       ),
   },
   {

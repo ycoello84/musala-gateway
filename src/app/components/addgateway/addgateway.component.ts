@@ -47,6 +47,7 @@ export class AddgatewayComponent implements OnInit {
     this.checkedPeripheralDevice = !this.checkedPeripheralDevice;
     if (this.checkedPeripheralDevice) {
       console.log('Checked: true');
+      this.router.navigate(['/','add-device'])
     }else {
       console.log('Checked: false');
     }

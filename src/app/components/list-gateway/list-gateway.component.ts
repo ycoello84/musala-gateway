@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TitlecardService } from '../../services/titlecard.service';
 import { GatewayService } from 'src/app/services/gateway.service';
 import { GatewayModel } from 'src/app/interfaces/gateway.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 const TITLE_CARD_LIST = 'List gateway';
 @Component({
@@ -15,8 +16,9 @@ const TITLE_CARD_LIST = 'List gateway';
   templateUrl: './list-gateway.component.html',
   styleUrls: ['./list-gateway.component.scss'],
 })
-export class ListGatewayComponent implements OnInit {
+export class ListGatewayComponent implements OnInit, OnDestroy  {
   objGateway: GatewayModel[] = [];
+  stop$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private titleCardService: TitlecardService,
@@ -32,7 +34,9 @@ export class ListGatewayComponent implements OnInit {
   }
 
   loadGateway() {
-    this.gatewayService.getAllGateways().subscribe({
+    this.gatewayService.getAllGateways()
+    .pipe(takeUntil(this.stop$))
+    .subscribe({
       next: (data: any) => {
         console.log('Gateway: ', data);
         this.objGateway = data;
@@ -57,4 +61,9 @@ export class ListGatewayComponent implements OnInit {
   }
 
   ViewDetails(id: string) {}
+  
+  ngOnDestroy(): void {
+    this.stop$.next(true);
+    this.stop$.complete();
+  }
 }
