@@ -23,8 +23,8 @@ export class GatewayService {
 
   // Http Options
   httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
+    headers: new HttpHeaders({     
+      'Content-Type': 'application/json'   
     }),
   };
 
@@ -34,7 +34,7 @@ export class GatewayService {
 
   getAllGateways(): Observable<GatewayModel> {
     return this.httpClient
-      .get<GatewayModel>(this.URL + 'gateway')
+      .get<GatewayModel>(this.URL + 'gateway/list')
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -46,7 +46,7 @@ export class GatewayService {
 
   getAllDevice(): Observable<DeviceModel> {
     return this.httpClient
-      .get<DeviceModel>(this.URL + 'device')
+      .get<DeviceModel>(this.URL + 'device/list')
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -60,10 +60,11 @@ export class GatewayService {
     );
   }
 
-  createGateway(gateway: any): Observable<GatewayModel> {    
+  createGateway(gateway: GatewayModel): Observable<GatewayModel> {  
+    console.log('createGateway: ',gateway);  
     return this.httpClient
       .post<GatewayModel>(
-        this.URL + 'gateway',
+        this.URL + 'gateway/create',
         JSON.stringify(gateway),
         this.httpOptions
       )
@@ -103,7 +104,7 @@ export class GatewayService {
 
   deleteGateway(id: string) {    
     return this.httpClient
-      .delete<GatewayModel>(this.URL + 'gateway/' + id, this.httpOptions)
+      .delete<GatewayModel>(this.URL + 'gateway/delete/' + id, this.httpOptions)
       .pipe(retry(1), catchError(this.handleError));
   }
   

@@ -22,7 +22,7 @@ export class AddgatewayComponent implements OnInit {
 
   gatewayForm: FormGroup;
   checkedPeripheralDevice = false;
-  gatewayDetails = { name: '', serial: '', ip: '' };
+  gatewayDetails = { name: '', serial: '', ip: '', id: 0 };
   
 
   constructor(private titleCardService: TitlecardService, private fb: FormBuilder, private gatewayService: GatewayService, public router: Router) {
@@ -63,6 +63,7 @@ export class AddgatewayComponent implements OnInit {
     this.gatewayDetails.name = this.gatewayForm.value.name;
     this.gatewayDetails.serial = this.gatewayForm.value.serial;
     this.gatewayDetails.ip = this.gatewayForm.value.ip;
+    this.gatewayDetails.id = 123456789;
     this.addGateway(this.gatewayDetails);
   }
 

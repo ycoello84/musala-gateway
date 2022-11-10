@@ -26,7 +26,7 @@
               <td class="py-4 px-6 text-right">
                 <a routerLink="/details-gateway/{{ gateway.id }}" class="font-medium cursor-pointer text-yellow-500 dark:text-yellow-500 hover:underline">Details</a>
                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline pl-4 cursor-pointer" (click)="editGateway(gateway)">Edit</a>
-                <a class="font-medium text-red-600 dark:text-red-500 hover:underline pl-4 cursor-pointer" (click)="deleteGateway(gateway.id)">Delete</a>
+                <a class="font-medium text-red-600 dark:text-red-500 hover:underline pl-4 cursor-pointer" (click)="deleteGateway(gateway._id)">Delete</a>
               </td>
             </tr>            
           </tbody>

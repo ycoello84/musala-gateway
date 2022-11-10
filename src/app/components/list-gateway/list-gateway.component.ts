@@ -45,7 +45,7 @@ export class ListGatewayComponent implements OnInit, OnDestroy  {
   }
 
   // Delete gateway
-  deleteGateway(id: any) {
+  deleteGateway(id: any) {    
     if (window.confirm('Are you sure, you want to delete?')) {
       this.gatewayService.deleteGateway(id).subscribe((data) => {
         this.loadGateway();

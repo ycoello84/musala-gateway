@@ -38,6 +38,7 @@ export class DeviceListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.stop$))
       .subscribe({
         next: (data: any) => {
+          console.log('List device: ', data);
           this.objDevice = data;
         },
       });
@@ -46,12 +47,14 @@ export class DeviceListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.stop$))
       .subscribe({
         next: (data: any) => {
+          console.log('List gateway: ', data);
           this.objGateway = data;
         },
       });
   }
 
   gatewayName(deviceID: string) {
+    console.log('deviceID: ', deviceID);
     return this.objGateway
       .filter((gateway) => gateway.id === deviceID)
       .map((gatewayResult) => gatewayResult.name)

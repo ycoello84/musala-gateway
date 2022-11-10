@@ -3,4 +3,5 @@ export interface GatewayModel {
   ip: string;
   name: string;
   serial: string;
+  _id?:string;
 }
