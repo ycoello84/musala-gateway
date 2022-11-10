@@ -33,20 +33,22 @@ export class DeviceListComponent implements OnInit, OnDestroy {
   }
 
   loadGateway() {
-    this.gatewayService.getAllDevice()
-    .pipe(takeUntil(this.stop$))
-    .subscribe({
-      next: (data: any) => {        
-        this.objDevice = data;
-      },
-    });
-    this.gatewayService.getAllGateways()
-    .pipe(takeUntil(this.stop$))
-    .subscribe({
-      next: (data: any) => {        
-        this.objGateway = data;
-      },
-    });
+    this.gatewayService
+      .getAllDevice()
+      .pipe(takeUntil(this.stop$))
+      .subscribe({
+        next: (data: any) => {
+          this.objDevice = data;
+        },
+      });
+    this.gatewayService
+      .getAllGateways()
+      .pipe(takeUntil(this.stop$))
+      .subscribe({
+        next: (data: any) => {
+          this.objGateway = data;
+        },
+      });
   }
 
   gatewayName(deviceID: string) {
@@ -57,17 +59,24 @@ export class DeviceListComponent implements OnInit, OnDestroy {
   }
 
   ChangeStatus(lastDevice: DeviceModel) {
-    for (const device of this.objDevice) {      
-      if(lastDevice.id === device.id){
+    for (const device of this.objDevice) {
+      if (lastDevice.id === device.id) {
         device.status = device.status == true ? false : true;
         this.updateDevice(device);
       }
     }
   }
 
-  updateDevice(device: DeviceModel){    
-      this.gatewayService.updateDevice(device.id, device).subscribe(data => {})
-    
+  updateDevice(device: DeviceModel) {
+    this.gatewayService.updateDevice(device.id, device).subscribe((data) => {});
+  }
+
+  deleteDevice(id: any) {
+    if (window.confirm('Are you sure, you want to delete device?')) {
+      this.gatewayService.deleteDevice(id).subscribe((data) => {
+        this.loadGateway();
+      });
+    }
   }
 
   ngOnDestroy(): void {

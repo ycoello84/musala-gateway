@@ -106,6 +106,12 @@ export class GatewayService {
       .delete<GatewayModel>(this.URL + 'gateway/' + id, this.httpOptions)
       .pipe(retry(1), catchError(this.handleError));
   }
+  
+  deleteDevice(id: string) {    
+    return this.httpClient
+      .delete<DeviceModel>(this.URL + 'device/' + id, this.httpOptions)
+      .pipe(retry(1), catchError(this.handleError));
+  }
 
   handleError(error: any) {
     let errorMessage = '';
